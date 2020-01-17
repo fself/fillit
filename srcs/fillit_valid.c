@@ -6,7 +6,7 @@
 /*   By: fself <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/18 11:12:06 by fself             #+#    #+#             */
-/*   Updated: 2019/12/18 13:30:03 by fself            ###   ########.fr       */
+/*   Updated: 2019/12/20 23:35:24 by fself            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,9 @@ void	print_answer(char **box, int size)
 	i = 0;
 	while (i < size)
 	{
-		ft_putstr(box[i++]);
+		ft_putstr(box[i]);
+		free(box[i++]);
 		ft_putchar('\n');
 	}
+	free(box);
 }

@@ -10,30 +10,39 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fillit
-SRCS = $(wildcard *.c)
-OBJS = $(SRCS:.c=.o)
-LIB = ./libft/libft.a
-HEADERS = $(wildcard *.h)
-FLAGS = -Wall -Wextra -Werror
+NAME			= fillit
 
-.PHONY: all clean fclean re
+CC				= gcc
+CFLAGS			= -Wall -Wextra -Werror
+
+SRCS			= srcs/main.c \
+				  srcs/fillit_cheker.c \
+				  srcs/fillit_valid.c \
+				  srcs/get_next_line.c 
+
+OBJS = $(subst .c,.o,$(subst srcs/,,$(SRCS)))
+
+
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(HEADERS)
-	make -C libft/ all
-	clang -o fillit $(OBJS) $(LIB) $(FLAGS)
+$(NAME): lib $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L libft -lft
 
-build: $(SRCS) $(HEADERS)
-	clang $(FLAGS) -c $(SRCS)
+$(OBJS):
+	$(CC) $(CFLAGS) -c $(SRCS) -Iincludes/ -Ilibft/includes/
+
+lib:
+	make -C libft
 
 clean:
-	make -C libft/ clean
-	rm -f $(OBJS)
+	/bin/rm -rf $(OBJS)
+	make -C libft clean
 
 fclean: clean
-	make -C libft/ fclean
-	rm -f $(NAME)
+	/bin/rm -rf $(NAME)
+	make -C libft fclean
 
 re: fclean all
+
+.PHONY: clean fclean all re

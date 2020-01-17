@@ -6,7 +6,7 @@
 /*   By: fself <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/18 11:10:16 by fself             #+#    #+#             */
-/*   Updated: 2019/12/18 13:27:41 by fself            ###   ########.fr       */
+/*   Updated: 2019/12/21 00:34:31 by fself            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ int		ft_fillit_check(int fd, int step)
 	i = 0;
 	while (i < 5 && get_next_line(fd, &s) > 0)
 	{
-		if (i == 0 && ((ft_strlen(s) == 0 && step == 0) ||
+		if (i == 0 && ((ft_strlen(s) != 4 && step == 0) ||
 					(ft_strlen(s) != 0 && step != 0)))
-			return (-1);
+			return (return_value(0, buffer, 1));
 		if (i == 0 && ft_strlen(s) != 0)
 			i++;
 		if (i == 0 && ft_strlen(s) == 0 && step != 0)
@@ -108,17 +108,24 @@ int		ft_fillit_check(int fd, int step)
 		if (i != 0 && ft_strlen(s) == 4)
 			buffer[i++ - 1] = s;
 		else
-			return (-1);
+			return (return_value(i, buffer, 0));
 	}
-	return (return_value(i, buffer));
+	return (return_value(i, buffer, 0));
 }
 
-int		return_value(int i, char **buffer)
+int		return_value(int i, char **buffer, int flag)
 {
+	if (flag)
+	{
+		del_strstr(buffer, i);
+		return (-1);
+	}
 	if (i == 5 && check_symbols(buffer))
 		return (check_tetriminos(buffer));
 	del_strstr(buffer, i - 1);
 	if (i == 0)
+	{
 		return (-2);
+	}
 	return (-1);
 }
